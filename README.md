@@ -5,11 +5,9 @@ AI-powered spreadsheet BI insights. Upload CSV or Excel files and ask natural la
 ## Architecture
 
 ```
-User (React)
+User (Browser)
   ↕ WebSocket
-FastAPI (middleware + Claude API)
-  ↕ stdio subprocess
-MCP Server (DuckDB/pandas query engine)
+FastAPI (LangChain + DuckDB embedded)
 ```
 
 ## Prerequisites
@@ -30,22 +28,13 @@ cd BISense
 cp .env.example .env
 # Edit .env and add your ANTHROPIC_API_KEY
 
-# 3. Run with Docker (all 3 services)
+# 3. Run with Docker (2 services)
 docker compose up --build
 
 # 4. Open http://localhost:5173
 ```
 
 ## Local Development (without Docker)
-
-### MCP Server
-```bash
-cd mcp-server
-python -m venv .venv
-.venv\Scripts\activate   # Windows
-pip install -r requirements.txt
-python -m bisense_mcp
-```
 
 ### Backend
 ```bash
@@ -70,15 +59,13 @@ npm run dev
 ```
 BISense/
 ├── frontend/       React + TypeScript + Vite
-├── backend/        FastAPI + WebSockets + Claude API
-├── mcp-server/     MCP server + DuckDB query engine
+├── backend/        FastAPI + LangChain + DuckDB (embedded)
 └── docker-compose.yml
 ```
 
 ## Deployment
 
-| Component  | Platform | Notes                        |
-|------------|----------|------------------------------|
-| Frontend   | Vercel   | Root dir: `frontend/`        |
-| Backend    | Railway  | Persistent volume for uploads|
-| MCP Server | Railway  | Shared volume with backend   |
+| Component | Platform | Notes                         |
+|-----------|----------|-------------------------------|
+| Frontend  | Vercel   | Root dir: `frontend/`         |
+| Backend   | Railway  | Persistent volume for uploads |

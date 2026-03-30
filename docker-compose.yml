@@ -23,22 +23,11 @@ services:
       - .env
     volumes:
       - uploads_data:/app/uploads
-    depends_on:
-      - mcp-server
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/api/health"]
       interval: 30s
       timeout: 10s
       retries: 3
-
-  mcp-server:
-    build:
-      context: ./mcp-server
-      dockerfile: Dockerfile
-    volumes:
-      - uploads_data:/app/uploads
-    env_file:
-      - .env
 
 volumes:
   uploads_data:
